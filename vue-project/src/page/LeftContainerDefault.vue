@@ -10,7 +10,7 @@
         <SidebarMinimizer/>
       </AppSidebar>
       <main class="main">
-        <Breadcrumb :list="nav"/>
+        <!-- <Breadcrumb :list="nav"/> -->
         <div class="container-fluid">
           <router-view></router-view>
         </div>
@@ -43,17 +43,8 @@ export default {
   data () {
     return {
       nav: [{
-      name: 'Dashboard',
-      url: '/dashboard',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'primary',
-        text: 'NEW'
-      }
-    },
-    {
       title: true,
-      name: 'Theme',
+      name: 'Type',
       class: '',
       wrapper: {
         element: '',
@@ -61,33 +52,34 @@ export default {
       }
     },
     {
-      name: 'Colors',
-      url: '/theme/colors',
-      icon: 'icon-drop'
-    },
-    {
-      name: 'Typography',
-      url: '/theme/typography',
-      icon: 'icon-pencil'
-    },
-    {
-      title: true,
-      name: 'Components',
-      class: '',
-      wrapper: {
-        element: '',
-        attributes: {}
-      }
-    }]
+      name: 'All',
+      url: '/form',
+      children: [
+          {
+            name: 'type_1',
+            url: '/filter?type_1'
+          },
+          
+          {
+            name: 'type_2',
+            url: '/filter?type_2'
+          },
+          {
+            name: 'type_3',
+            url: '/filter?type_3'
+          }
+      ]
+    }
+    ]
     }
   },
   computed: {
-    name () {
-      return this.$route.name
-    },
-    list () {
-      return this.nav.matched.filter((type) => type.name  )
-    }
+    // name () {
+    //   return this.$route.name
+    // },
+    // list () {
+    //   return this.nav.matched.filter((type) => type.name  )
+    // }
   }
 }
 </script>
