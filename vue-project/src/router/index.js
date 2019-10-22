@@ -53,7 +53,7 @@ export default new Router({
               component: Card,
             },
             {
-              path: 'form',
+              path: 'form/:id',
               name: 'Form',
               component: {
                 render (c) { return c('router-view') }

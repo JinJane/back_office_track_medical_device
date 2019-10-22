@@ -4,8 +4,8 @@
   <div class="card-body">
     <h5 class="card-title" v-bind="name">{{name}}</h5>
     <p class="card-text" v-bind="type">{{type}}</p>
-    <!-- <router-link :to="{name: 'form', params: {id: id}}"></router-link>  -->
-        <a href="#" class="btn btn-primary btn-lg float-right" v-on="click()">View</a>
+    <!-- <router-link :to="{name: 'form', params: {id: id}}"></router-link>  v-on="viewInfo(id)" to="/form/"this.id-->
+        <a href="#" class="btn btn-primary btn-lg float-right" >View</a>
         
   </div>
 </div>
@@ -33,12 +33,13 @@ export default {
     })
     },
     methods: {
-        click(){
-            console.log(this.id);
-            // this.$router.push({name:'form',params:{id:id}});
-            console.log("helo");
-            // this.$router.go('/form')
-        }
+        // viewInfo(id){
+        //     console.log(id);
+        //  this.$router.push({name:'form',params:{id:id}});
+        //     console.log("helo");
+        //     this.$router.go('/form')
+        //     //this.$router.go(-1)
+        // }
     }
 }
 </script>
