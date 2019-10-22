@@ -121,11 +121,11 @@
               <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="customChk3" value="3">
                 <label class="custom-control-label" for="customChk3">Option 3</label>
-              </div> -->
+              </div> Image-->
             </b-form-checkbox-group>  
           </b-form-group>
           <b-form-group>
-            <label for="image">Image</label>
+            <label for="image"></label>
             <b-form-input type="text" placeholder="" v-model="image">{{image}}</b-form-input>
           </b-form-group>
           <div slot="footer">

@@ -5,7 +5,24 @@
       <AppSidebar fixed>
         <SidebarHeader/>
         <SidebarForm/>
-        <SidebarNav :navItems="nav"></SidebarNav>
+        <!-- <SidebarNav :navItems="nav"></SidebarNav> -->
+        <ul class="nav">
+            <li class="nav-title">Type</li>
+            <li class="nav-item nav-dropdown">
+              <a class="nav-link nav-dropdown-toggle" href="#">All</a>
+              <ul class="nav-dropdown-items">
+                <li class="nav-item">
+                  <a class="nav-link" >type_1</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">type_2</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">type_3</a>
+                </li>
+              </ul>
+             </li>
+          </ul>
         <SidebarFooter/>
         <SidebarMinimizer/>
       </AppSidebar>
