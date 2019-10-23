@@ -4,8 +4,8 @@
       <SidebarToggler class="d-md-down-none" display="lg" :defaultOpen=true />
           <b-navbar-nav class="d-md-down-none">
          
-            <b-nav-item class="px-5" active to="./form">Beacon</b-nav-item>
-            <b-nav-item class="px-5" to="./card">Users</b-nav-item>
+            <b-nav-item class="px-5">Beacon</b-nav-item>
+            <b-nav-item class="px-5" to="./cardList">Users</b-nav-item>
             <b-nav-item class="px-5" to="./tables" exact>Log</b-nav-item>
             <b-nav-item class="px-5">Map</b-nav-item>
           </b-navbar-nav>

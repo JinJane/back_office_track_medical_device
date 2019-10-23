@@ -111,17 +111,17 @@
             </b-form-checkbox-group> -->
             <b-form-checkbox-group stacked id="basicCustomCheckboxes">
               <div class="custom-control custom-checkbox">
-                <input name="lll" type="checkbox" class="custom-control-input" id="customChk1" value="1" @click="checkBoxToggle()" >
-                <label class="custom-control-label" for="customChk1">Option 1</label>
-              </div>
-              <!-- <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customChk2" value="2">
-                <label class="custom-control-label" for="customChk2">Option 2</label>
+                <input type="checkbox" class="custom-control-input" id="1" value="1">
+                <label class="custom-control-label" for="customChk1">แผนก A</label>
               </div>
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customChk3" value="3">
-                <label class="custom-control-label" for="customChk3">Option 3</label>
-              </div> Image-->
+                <input type="checkbox" class="custom-control-input" id="2" value="2">
+                <label class="custom-control-label" for="customChk2">แผนก B</label>
+              </div>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="3" value="3">
+                <label class="custom-control-label" for="customChk3">แผนก C</label>
+              </div>
             </b-form-checkbox-group>  
           </b-form-group>
           <b-form-group>
@@ -129,8 +129,9 @@
             <b-form-input type="text" placeholder="" v-model="image">{{image}}</b-form-input>
           </b-form-group>
           <div slot="footer">
-            <b-button type="submit" size="sm" variant="primary"><i class="fa fa-dot-circle-o"></i> Submit</b-button>
-            <b-button type="reset" size="sm" variant="danger"><i class="fa fa-ban"></i> Reset</b-button>
+            <b-button type="submit" size="sm" variant="primary" @click="editCard()"><i class="fa fa-dot-circle-o"></i>Edit</b-button>
+            <b-button type="submit" size="sm" variant="danger" @click="deleteCard()"><i class="fa fa-dot-circle-o"></i>Delete</b-button>
+            <b-button type="reset" size="sm" variant="secondary" to="./cardList"><i class="fa fa-dot-circle-o"></i>Back</b-button>
           </div>
           </b-form>
         </b-card>
@@ -162,59 +163,76 @@ export default {
       YEAR:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
       TAGS:["แผนก A","แผนก B","แผนก C"],
       listTags:{},
-      test: this.$route.params.id
+      card: JSON.parse(window.localStorage.CardDevice)
     }
   },
   methods: {
     click () {
       // do nothing
+    },
+    editCard(){
+      console.log("edit")
+      this.$router.push("/form");
+    },
+    deleteCard(){
+      console.log("delete")
+      this.$router.push("/form");
     }
+    // filterCard: function() {
+    //   this.card = this.listDevice.filter(card => {
+    //     if(card._id.match(this.idLocal)){
+    //       return card._id.match(this.idLocal)
+    //     }
+    //   })
+    // }
   },
    created() {
-    console.log(this.test);
-    axios.get('http://www.mocky.io/v2/5dad582d2d00008040e4b8ff').then((response) => {
-      this.name = response.data.name
-      this.timesTarget = response.data.timesTarget
-      this.times = response.data.times
-      this.image = response.data.image
-      this.start = response.data.start
-      this.fix = response.data.fix
-      const YMD1 = splitDate (this.start)
+      this.name = this.card.name
+      this.timesTarget = this.card.timesTarget
+      this.times = this.card.times
+      this.image = this.card.image
+      this.start = this.card.start
+      this.fix = this.card.fix
+      const YMD1 = splitDate(this.start)
       this.year1 = YMD1[0]
       this.month1 = YMD1[1]
       this.day1 = YMD1[2]
-      const YMD2 = splitDate (this.fix)
+      const YMD2 = splitDate(this.fix)
       this.year2 = YMD2[0]
       this.month2 = YMD2[1]
       this.day2 = YMD2[2]
-      this.listTags = getTiggleTags(response.data.tag,this.TAGS);
-     
+      this.listTags = getTiggleTags(this.card.tag,this.TAGS);
+      // checkTags(this.listTags)
       console.log("list= "+JSON.stringify(this.listTags))
        console.log("AAAAA= "+Object.keys(this.listTags)[0])
       console.log("Hello")
-    })
-    .catch((e) => {
-      console.error(e)
-    })
+
   }
 }
 
 
 
-function test(toggle){
-toggle == !toggle
-console.log(toggle)
-$( "input" ).change(function() {
-  var $input = $( this );
-  $( "p" ).html(".is( \":checked\" ): <b>" + $input.is( ":checked" ) + "</b>" );
-}).change();
-}
+// function test(toggle){
+// toggle == !toggle
+// console.log(toggle)
+// $( "input" ).change(function() {
+//   var $input = $( this );
+//   $( "p" ).html(".is( \":checked\" ): <b>" + $input.is( ":checked" ) + "</b>" );
+// }).change();
+//  $('input[name=lll]').attr('checked', true);
+//     console.log("H")
+// }
 
-function checkBoxToggle(){
+// function checkTags(list){
+//   $(document).ready(function()
+//   {
+//     $("input[type=checkbox]").click(function()
+//     {
 
-    $('input[name=lll]').attr('checked', true);
-    console.log("H")
-}
+//     }
+//   }
+   
+// }
 
 function splitDate (date){
     const YMD = date.split("-")
@@ -227,10 +245,6 @@ function splitDate (date){
 
 function getTiggleTags(tags,TAGS){
     var list = {}
-    var listTagName = [];
-    var listTagStatus = []
-    var tagName =[];
-    var tagStatus = [];
 if(undefined !== tags && tags.length){
     for(var i=0;i<tags.length;i++){
         for(var j=0;j<TAGS.length;j++){
