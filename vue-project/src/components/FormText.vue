@@ -1,6 +1,7 @@
 <template>
-          <b-col sm="6">
-        <b-card>
+<div class="center" style="padding-left: 200px; padding-right: 300px;">
+          <b-col >
+        <b-card sm="6" style="margin-top: 20px">
           <div slot="header">
             <strong>DATA</strong><small>     Information</small>
           </div>
@@ -103,39 +104,31 @@
             label-for="basicCheckboxes"
             :label-cols="3"
             >
-            <!-- tag[i].value == !tag[i].value Object.value(tag)[i] == !Object.value(tag)[i]-->
-            <!-- <b-form-checkbox-group id="basicCheckboxes" name="Checkboxes" :plain="true" >
-              <li v-for= "(tag,i) in listTags" :key="tag">
-              <b-form-checkbox @click="test(Object.value(tag)[i])" v-bind="Object.keys(listTags)[i]" >{{Object.keys(tag)[i]}}</b-form-checkbox>
-              </li>
-            </b-form-checkbox-group> -->
             <b-form-checkbox-group stacked id="basicCustomCheckboxes">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="1" value="1">
-                <label class="custom-control-label" for="customChk1">แผนก A</label>
-              </div>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="2" value="2">
-                <label class="custom-control-label" for="customChk2">แผนก B</label>
-              </div>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="3" value="3">
-                <label class="custom-control-label" for="customChk3">แผนก C</label>
+              <div class="form-check" v-for="i in TAGS" v-bind:key = i >
+               <input type="checkbox" class="form-check-input" v-model="listTags[i]" @click="print()"> 
+                <label class="form-check-label" >{{i}}</label>
               </div>
             </b-form-checkbox-group>  
-          </b-form-group>
+          </b-form-group> 
           <b-form-group>
             <label for="image"></label>
             <b-form-input type="text" placeholder="" v-model="image">{{image}}</b-form-input>
           </b-form-group>
-          <div slot="footer">
+          <div slot="footer" class="float-right">
             <b-button type="submit" size="sm" variant="primary" @click="editCard()"><i class="fa fa-dot-circle-o"></i>Edit</b-button>
-            <b-button type="submit" size="sm" variant="danger" @click="deleteCard()"><i class="fa fa-dot-circle-o"></i>Delete</b-button>
+            <b-button type="submit" size="sm" variant="danger"  v-b-modal.delete ><i class="fa fa-dot-circle-o"></i>Delete</b-button>
+              <b-modal id="delete" title="Warning" hide-footer>
+                <p class="my-4">Do you want to delete this device?sdfghjkl</p>
+                <b-button class="mt-3" variant="outline-danger" block >Cancel</b-button>
+               <b-button class="mt-2" variant="outline-warning" block @click="deleteCard()">OK</b-button>
+              </b-modal>
             <b-button type="reset" size="sm" variant="secondary" to="./cardList"><i class="fa fa-dot-circle-o"></i>Back</b-button>
           </div>
           </b-form>
         </b-card>
       </b-col>
+      </div>
 </template>
 
 <script>
@@ -167,24 +160,32 @@ export default {
     }
   },
   methods: {
+    checkTag(c){
+      console.log(listTags[c])
+      if (listTags[c] == true){
+        listTags[c] = false
+      }
+    },
     click () {
       // do nothing
     },
     editCard(){
-      console.log("edit")
+        console.log(JSON.stringify(this.listTags))
       this.$router.push("/form");
+      // console.log("edit")
     },
     deleteCard(){
-      console.log("delete")
       this.$router.push("/form");
+      console.log("delete")
+      this.$refs['delete'].hide()
+      // axios.delete('').then((response) => {
+      //   this.list = response.data
+      //   window.localStorage.listDevice = JSON.stringify(response.data)
+      //   })
+      //   .catch((e) => {
+      //   console.error(e)
+      //   })
     }
-    // filterCard: function() {
-    //   this.card = this.listDevice.filter(card => {
-    //     if(card._id.match(this.idLocal)){
-    //       return card._id.match(this.idLocal)
-    //     }
-    //   })
-    // }
   },
    created() {
       this.name = this.card.name
@@ -202,64 +203,35 @@ export default {
       this.month2 = YMD2[1]
       this.day2 = YMD2[2]
       this.listTags = getTiggleTags(this.card.tag,this.TAGS);
-      // checkTags(this.listTags)
-      console.log("list= "+JSON.stringify(this.listTags))
-       console.log("AAAAA= "+Object.keys(this.listTags)[0])
-      console.log("Hello")
-
+      console.log(JSON.stringify(this.listTags))
   }
 }
-
-
-
-// function test(toggle){
-// toggle == !toggle
-// console.log(toggle)
-// $( "input" ).change(function() {
-//   var $input = $( this );
-//   $( "p" ).html(".is( \":checked\" ): <b>" + $input.is( ":checked" ) + "</b>" );
-// }).change();
-//  $('input[name=lll]').attr('checked', true);
-//     console.log("H")
-// }
-
-// function checkTags(list){
-//   $(document).ready(function()
-//   {
-//     $("input[type=checkbox]").click(function()
-//     {
-
-//     }
-//   }
-   
-// }
 
 function splitDate (date){
     const YMD = date.split("-")
     const D = YMD[2].split("T")[0]
     YMD.pop()
     YMD.push(D)
-    console.log(YMD)
     return YMD
 }
 
-function getTiggleTags(tags,TAGS){
+function getTiggleTags(tags,TAGS){ 
     var list = {}
 if(undefined !== tags && tags.length){
     for(var i=0;i<tags.length;i++){
-        for(var j=0;j<TAGS.length;j++){
-            if(tags[i]==TAGS[j]){
-                    console.log(TAGS[j])
-               list[TAGS[j]] = true
+        
+            if(TAGS.includes(tags[i])){
+               list[tags[i]] = true
+               console.log(tags[i] + ": true")
             }else{
-              list[TAGS[j]] = false
-            }
-        }
+              list[tags[i]] = false
+                  console.log(tags[i] + ": true")
+            }  
     }
 }
-    
     return list;
 }
+
 </script>
 
 <style scoped>
@@ -270,5 +242,11 @@ if(undefined !== tags && tags.length){
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+</style>
+
+<style>
+.center {
+  align-items: center;
 }
 </style>

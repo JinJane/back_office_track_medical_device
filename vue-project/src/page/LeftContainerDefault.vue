@@ -28,7 +28,7 @@
       </AppSidebar>
       <main class="main">
         <!-- <Breadcrumb :list="nav"/> -->
-        <div class="container-fluid">
+        <div class="container-fluid center">
           <router-view></router-view>
         </div>
       </main>

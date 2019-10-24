@@ -1,6 +1,6 @@
 <template>
-    <div class="card" style="width: 18rem;  margin: 5px 2px 5px 2px;">
-  <img class="card-img-top" src="@/assets/device_madical.png" alt="Device_Pic">
+    <div class="card" style="width: 18rem;  margin: 20px 10px 10px 10px;">
+  <img class="card-img-top" v-bind:src="card.image" alt="Device_Pic">
   <div class="card-body">
     <h5 class="card-title" >{{card.name}}</h5>
     <p class="card-text" >{{card.type}}</p>
@@ -21,7 +21,6 @@ export default {
         viewInfo(card){
           window.localStorage.CardDevice = JSON.stringify(card)
             this.$router.push("/form");
-            console.log("helo");
         }
     }
 }
