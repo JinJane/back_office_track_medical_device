@@ -116,18 +116,23 @@
             <b-form-input type="text" placeholder="" v-model="image">{{image}}</b-form-input>
           </b-form-group>
           <div slot="footer" class="float-right">
-            <b-button type="submit" size="sm" variant="primary" @click="editCard()"><i class="fa fa-dot-circle-o"></i>Edit</b-button>
-            <b-button type="submit" size="sm" variant="danger"  v-b-modal.delete ><i class="fa fa-dot-circle-o"></i>Delete</b-button>
-              <b-modal id="delete" title="Warning" hide-footer>
-                <p class="my-4">Do you want to delete this device?sdfghjkl</p>
-                <b-button class="mt-3" variant="outline-danger" block >Cancel</b-button>
-               <b-button class="mt-2" variant="outline-warning" block @click="deleteCard()">OK</b-button>
-              </b-modal>
-            <b-button type="reset" size="sm" variant="secondary" to="./cardList"><i class="fa fa-dot-circle-o"></i>Back</b-button>
+            <b-button size="sm" variant="primary" @click="setOnClickEdit()"><i class="fa fa-dot-circle-o"></i>Edit</b-button> 
+
+            <b-button size="sm" variant="danger" @click="setOnClickDelete()"><i class="fa fa-dot-circle-o"></i>Delete</b-button>
+
+            <b-button size="sm" variant="secondary" @click="gotoClick()" to="./cardList"><i class="fa fa-dot-circle-o"></i>Back</b-button>
           </div>
           </b-form>
         </b-card>
       </b-col>
+
+    <b-modal title="Warning!" v-model="deleteClick" @ok="deleteClick = false ;deleteCard()">
+      Do you want to delete this device?
+    </b-modal>
+    <b-modal title="Warning!" v-model="editClick" @ok="editClick = false ;editCard()">
+      Do you want to edit this device?
+    </b-modal>
+
       </div>
 </template>
 
@@ -141,7 +146,6 @@ export default {
       name:null,
       timesTarget: null,
       times: null,
-      tags: [],
       image: null,
       day1: null,
       day2: null,
@@ -156,28 +160,40 @@ export default {
       YEAR:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
       TAGS:["แผนก A","แผนก B","แผนก C"],
       listTags:{},
-      card: JSON.parse(window.localStorage.CardDevice)
+      card: JSON.parse(window.localStorage.CardDevice),
+      deleteClick: false,
+      editClick: false,
+      returnResponse:{}
     }
   },
   methods: {
-    checkTag(c){
-      console.log(listTags[c])
-      if (listTags[c] == true){
-        listTags[c] = false
-      }
+    setOnClickEdit(){
+      this.editClick = true;
     },
-    click () {
-      // do nothing
+    setOnClickDelete(){
+       this.deleteClick = true;
     },
     editCard(){
-        console.log(JSON.stringify(this.listTags))
-      this.$router.push("/form");
+      returnTag(this.listTags)
+
+         //localStorage.setItem("A","B")
+      // this.$router.push("/form");
       // console.log("edit")
     },
     deleteCard(){
-      this.$router.push("/form");
-      console.log("delete")
-      this.$refs['delete'].hide()
+      // this.$router.push("/form");
+      
+      this.returnResponse["name"] = this.name
+      this.returnResponse["timesTarget"] = this.timesTarget
+      this.returnResponse["times"] = this.times
+      this.returnResponse["image"] = this.image
+      this.returnResponse["start"] = returnDate(this.day1,this.month1,this.year1)
+      this.returnResponse["fix"] = returnDate(this.day2,this.month2,this.year2)
+      this.returnResponse["location"] = this.card.location
+      this.returnResponse["type"] = this.type
+      this.returnResponse["tag"] = returnTag(this.listTags)
+      this.returnResponse["_id"] = this.card._id
+      console.log(JSON.stringify(this.returnResponse))
       // axios.delete('').then((response) => {
       //   this.list = response.data
       //   window.localStorage.listDevice = JSON.stringify(response.data)
@@ -185,6 +201,9 @@ export default {
       //   .catch((e) => {
       //   console.error(e)
       //   })
+    },
+    gotoClick(){
+       localStorage.removeItem("CardDevice")
     }
   },
    created() {
@@ -207,7 +226,32 @@ export default {
   }
 }
 
+function returnDate(day,month,year){
+  var date = year.concat("-").concat(month).concat("-").concat("T09:00:00.000+02:00")
+  return date;
+}
+
+function returnTag(list){
+var allKeys = Object.keys(list)
+var allValues = Object.values(list)
+var returnList = []
+for(var i=0 ; i<allKeys.length;i++){
+  if(allValues[i]===true){
+    returnList.push(allKeys[i])
+  }else{
+    returnList.pop(allKeys[i])
+  }
+}
+  console.log(returnList)
+return returnList;
+}
+
 function splitDate (date){
+  if(date=null){
+          var time = new Date().getTime();
+    var date = new Date(time);
+         console.log(date)
+  }
     const YMD = date.split("-")
     const D = YMD[2].split("T")[0]
     YMD.pop()
@@ -225,9 +269,14 @@ if(undefined !== tags && tags.length){
                console.log(tags[i] + ": true")
             }else{
               list[tags[i]] = false
-                  console.log(tags[i] + ": true")
+                  console.log(tags[i] + ": false")
             }  
     }
+}else{
+  for(var j=0;j<TAGS.length;j++){
+    list[TAGS[j]] = false
+     console.log(tags[i] + ": false")
+  }
 }
     return list;
 }

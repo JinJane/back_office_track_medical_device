@@ -1,6 +1,13 @@
 <template>
     <div>
         <div class="columns is-centered is-multiline content" >
+
+         <div class="card" style="width: 18rem;  margin: 20px 10px 10px 10px; text-align:center;">
+            <div class="card-body" style=" display: grid; margin: 20px 20px 20px 20px;">
+              <a href="#" class="btn btn-primary btn-lg" style="margin: 30px 30px 30px 30px;" @click="gotoForm()">ADD</a>
+            </div>
+          </div>
+
         <div v-for="card in list" :key="card.id">
             <Card :card="card"></Card>
         </div>
@@ -21,9 +28,10 @@ export default {
         }
     },
     created() {
-        axios.get('http://www.mocky.io/v2/5db121b52e00005b005051ab').then((response) => {
+      console.log("hh")
+        axios.get('https://servicemed-43izies4dq-an.a.run.app/device').then((response) => {
         this.list = response.data
-        window.localStorage.listDevice = JSON.stringify(response.data)
+        localStorage.setItem("listDevice",JSON.stringify(response.data))
         })
         .catch((e) => {
         console.error(e)
@@ -35,6 +43,11 @@ export default {
         gridTemplateColumns: `8ch auto;`
       }
     },
+  },
+  methods: {
+    gotoForm(){
+      this.$router.push("/form");
+    }
   }
     
 }

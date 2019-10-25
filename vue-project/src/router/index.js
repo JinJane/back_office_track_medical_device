@@ -54,7 +54,7 @@ export default new Router({
               component: CardList,
             },
             {
-              path: 'form/:id',
+              path: 'form',
               name: 'Form',
               component: {
                 render (c) { return c('router-view') }

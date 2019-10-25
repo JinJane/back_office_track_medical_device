@@ -19,7 +19,7 @@ export default {
     },
     methods: {
         viewInfo(card){
-          window.localStorage.CardDevice = JSON.stringify(card)
+           localStorage.setItem("CardDevice",JSON.stringify(card))
             this.$router.push("/form");
         }
     }
