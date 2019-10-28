@@ -116,6 +116,9 @@
             <b-form-input type="text" placeholder="" v-model="image">{{image}}</b-form-input>
           </b-form-group>
           <div slot="footer" class="float-right">
+ 
+            <b-button v-if="this.checkAdd" size="sm" variant="success" @click="getCreate()"><i class="fa fa-dot-circle-o"></i>Create</b-button> 
+
             <b-button size="sm" variant="primary" @click="setOnClickEdit()"><i class="fa fa-dot-circle-o"></i>Edit</b-button> 
 
             <b-button size="sm" variant="danger" @click="setOnClickDelete()"><i class="fa fa-dot-circle-o"></i>Delete</b-button>
@@ -155,6 +158,7 @@ export default {
       year2: null,
       start: null,
       fix: null,
+      checkAdd:null,
       DAY:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
       MONTH:[1,2,3,4,5,6,7,8,9,10,11,12],
       YEAR:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
@@ -166,7 +170,19 @@ export default {
       returnResponse:{}
     }
   },
+  beforeDestroy: function(){ 
+localStorage.removeItem("ADD");
+},
   methods: {
+    getCreate(){
+//http://www.mocky.io/v2/5db121b52e00005b005051ab
+        axios.get('https://servicemed-43izies4dq-an.a.run.app/device').then((response) => {
+
+        })
+        .catch((e) => {
+        console.error(e)
+        })
+    },
     setOnClickEdit(){
       this.editClick = true;
     },
@@ -194,19 +210,19 @@ export default {
       this.returnResponse["tag"] = returnTag(this.listTags)
       this.returnResponse["_id"] = this.card._id
       console.log(JSON.stringify(this.returnResponse))
-      // axios.delete('').then((response) => {
-      //   this.list = response.data
-      //   window.localStorage.listDevice = JSON.stringify(response.data)
+      // axios.delete('https://servicemed-43izies4dq-an.a.run.app/device').then((response) => {
+      //   this.$router.push("/cardList");
       //   })
       //   .catch((e) => {
       //   console.error(e)
       //   })
     },
     gotoClick(){
-       localStorage.removeItem("CardDevice")
+       localStorage.removeItem("CardDevice");
     }
   },
    created() {
+     this.checkAdd = localStorage.getItem("ADD") !== null ?  localStorage.getItem("ADD") : false
       this.name = this.card.name
       this.timesTarget = this.card.timesTarget
       this.times = this.card.times
