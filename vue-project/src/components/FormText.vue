@@ -18,7 +18,7 @@
             <b-form-select id="basicSelect"
               :plain="true"
               :options="['เครื่องปั้มหัวใจ','Option 1', 'Option 2', 'Option 3']"
-
+              
               v-model="type">{{type}}
             </b-form-select>
           </b-form-group>
@@ -102,14 +102,14 @@
           </b-row>
 
           <b-form-group
-            label="Tags"
+            label="Tag"
             label-for="basicCheckboxes"
             :label-cols="4"
             >
             <b-form-select id="basicSelect"
               :plain="true"
               :options="['แผนก A','แผนก B', 'แผนก C', 'แผนก D']"
-              value="แผนก A">
+              v-model="tagEX">{{tagEX}}
             </b-form-select>
           </b-form-group>
 
@@ -182,11 +182,13 @@ export default {
       deleteClick: false,
       editClick: false,
       returnResponse:{},
-      tagEX: null
+      tagEX: null,
+      type: null
     }
   },
   beforeDestroy: function(){ 
 localStorage.removeItem("ADD");
+localStorage.removeItem("CardDevice");
 },
   methods: {
     getCreate(){
@@ -255,18 +257,22 @@ localStorage.removeItem("ADD");
       this.times = this.card.times
       this.image = this.card.image
       this.start = this.card.start
+      
       this.fix = this.card.fix
-      const YMD1 = splitDate(this.start)
-      this.year1 = YMD1[0]
-      this.month1 = YMD1[1]
-      this.day1 = YMD1[2]
-      const YMD2 = splitDate(this.fix)
-      this.year2 = YMD2[0]
-      this.month2 = YMD2[1]
-      this.day2 = YMD2[2]
-      this.tagEX = this.card.tagEX
+      const startDateTime = splitDate(this.start)
+    
+      this.year1 = startDateTime.getFullYear()
+      this.month1 = startDateTime.getMonth()
+      this.day1 = startDateTime.getDate()
+      
+      const fixDateTime = splitDate(this.fix)
+      this.year2 = fixDateTime.getFullYear()
+      this.month2 = fixDateTime.getMonth()
+      this.day2 = fixDateTime.getDate()
+       this.tagEX = this.card.tag
+       this.type = this.card.type
       // this.listTags = getTiggleTags(this.card.tag,this.TAGS);
-      // console.log(JSON.stringify(this.listTags))
+     
   }
 }
 
@@ -291,15 +297,7 @@ return returnList;
 }
 
 function splitDate (date){
-  if(date=null){
-          var time = new Date().getTime();
-    var date = new Date(time);
-         console.log(date)
-  }
-    const YMD = date.split("-")
-    const D = YMD[2].split("T")[0]
-    YMD.pop()
-    YMD.push(D)
+    const YMD = new Date(date)
     return YMD
 }
 
