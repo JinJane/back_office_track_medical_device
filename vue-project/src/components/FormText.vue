@@ -18,7 +18,8 @@
             <b-form-select id="basicSelect"
               :plain="true"
               :options="['เครื่องปั้มหัวใจ','Option 1', 'Option 2', 'Option 3']"
-              value="เครื่องปั้มหัวใจ">
+
+              v-model="type">{{type}}
             </b-form-select>
           </b-form-group>
           <b-form-group>
@@ -99,7 +100,20 @@
               </b-form-group>
             </b-col>
           </b-row>
+
           <b-form-group
+            label="Tags"
+            label-for="basicCheckboxes"
+            :label-cols="4"
+            >
+            <b-form-select id="basicSelect"
+              :plain="true"
+              :options="['แผนก A','แผนก B', 'แผนก C', 'แผนก D']"
+              value="แผนก A">
+            </b-form-select>
+          </b-form-group>
+
+          <!-- <b-form-group
             label="Tags"
             label-for="basicCheckboxes"
             :label-cols="3"
@@ -110,7 +124,7 @@
                 <label class="form-check-label" >{{i}}</label>
               </div>
             </b-form-checkbox-group>  
-          </b-form-group> 
+          </b-form-group>  -->
           <b-form-group>
             <label for="image"></label>
             <b-form-input type="text" placeholder="" v-model="image">{{image}}</b-form-input>
@@ -119,9 +133,9 @@
  
             <b-button v-if="this.checkAdd" size="sm" variant="success" @click="getCreate()"><i class="fa fa-dot-circle-o"></i>Create</b-button> 
 
-            <b-button size="sm" variant="primary" @click="setOnClickEdit()"><i class="fa fa-dot-circle-o"></i>Edit</b-button> 
+            <b-button v-if="!this.checkAdd" size="sm" variant="primary" @click="setOnClickEdit()"><i class="fa fa-dot-circle-o"></i>Edit</b-button> 
 
-            <b-button size="sm" variant="danger" @click="setOnClickDelete()"><i class="fa fa-dot-circle-o"></i>Delete</b-button>
+            <b-button v-if="!this.checkAdd" size="sm" variant="danger" @click="setOnClickDelete()"><i class="fa fa-dot-circle-o"></i>Delete</b-button>
 
             <b-button size="sm" variant="secondary" @click="gotoClick()" to="./cardList"><i class="fa fa-dot-circle-o"></i>Back</b-button>
           </div>
@@ -167,7 +181,8 @@ export default {
       card: JSON.parse(window.localStorage.CardDevice),
       deleteClick: false,
       editClick: false,
-      returnResponse:{}
+      returnResponse:{},
+      tagEX: null
     }
   },
   beforeDestroy: function(){ 
@@ -176,7 +191,19 @@ localStorage.removeItem("ADD");
   methods: {
     getCreate(){
 //http://www.mocky.io/v2/5db121b52e00005b005051ab
-        axios.get('https://servicemed-43izies4dq-an.a.run.app/device').then((response) => {
+      this.returnResponse["name"] = this.name
+      this.returnResponse["timesTarget"] = this.timesTarget
+      this.returnResponse["times"] = this.times
+      this.returnResponse["image"] = this.image
+      this.returnResponse["start"] = returnDate(this.day1,this.month1,this.year1)
+      this.returnResponse["fix"] = returnDate(this.day2,this.month2,this.year2)
+      this.returnResponse["location"] = this.card.location
+      this.returnResponse["type"] = this.type
+      this.returnResponse["tag"] = this.tagEX// this.returnResponse["tag"] = returnTag(this.listTags)
+      this.returnResponse["_id"] = this.card._id
+      
+      console.log(JSON.stringify(this.returnResponse))
+        axios.post('https://servicemed-43izies4dq-an.a.run.app/device').then((response) => {
 
         })
         .catch((e) => {
@@ -207,7 +234,7 @@ localStorage.removeItem("ADD");
       this.returnResponse["fix"] = returnDate(this.day2,this.month2,this.year2)
       this.returnResponse["location"] = this.card.location
       this.returnResponse["type"] = this.type
-      this.returnResponse["tag"] = returnTag(this.listTags)
+      this.returnResponse["tag"] = this.tagEX// this.returnResponse["tag"] = returnTag(this.listTags)
       this.returnResponse["_id"] = this.card._id
       console.log(JSON.stringify(this.returnResponse))
       // axios.delete('https://servicemed-43izies4dq-an.a.run.app/device').then((response) => {
@@ -237,8 +264,9 @@ localStorage.removeItem("ADD");
       this.year2 = YMD2[0]
       this.month2 = YMD2[1]
       this.day2 = YMD2[2]
-      this.listTags = getTiggleTags(this.card.tag,this.TAGS);
-      console.log(JSON.stringify(this.listTags))
+      this.tagEX = this.card.tagEX
+      // this.listTags = getTiggleTags(this.card.tag,this.TAGS);
+      // console.log(JSON.stringify(this.listTags))
   }
 }
 
