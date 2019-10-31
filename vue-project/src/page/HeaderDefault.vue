@@ -6,7 +6,7 @@
          
             <b-nav-item class="px-5" to="./">Beacon</b-nav-item>
             <b-nav-item class="px-5" to="./cardList">Users</b-nav-item>
-            <b-nav-item class="px-5" to="./tables" exact>Log</b-nav-item>
+            <b-nav-item class="px-5" to="./tables" exact>History</b-nav-item>
             <b-nav-item class="px-5">Map</b-nav-item>
           </b-navbar-nav>
       <b-navbar-nav class="ml-auto"></b-navbar-nav>

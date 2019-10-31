@@ -7,20 +7,22 @@
         <SidebarForm/>
         <!-- <SidebarNav :navItems="nav"></SidebarNav> -->
         <ul class="nav">
-            <li class="nav-title">Type</li>
+            <li class="nav-title">Beacon</li>
             <li class="nav-item nav-dropdown">
               <a class="nav-link nav-dropdown-toggle" href="#">All</a>
               <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                  <a class="nav-link" >type_1</a>
+                <li class="nav-item" >
+                  <a class="nav-link" style="margin-left: 20px">type_1</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">type_2</a>
+                <li class="nav-item" >
+                  <a class="nav-link" href="#" style="margin-left: 20px">type_2</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">type_3</a>
+                <li class="nav-item" >
+                  <a class="nav-link" href="#" style="margin-left: 20px">type_3</a>
                 </li>
               </ul>
+              <a class="nav-link" @click="goToTags()">Tags</a>
+              <a class="nav-link" @click="gotoType()">Type</a>
              </li>
           </ul>
         <SidebarFooter/>
@@ -59,38 +61,18 @@ export default {
   },
   data () {
     return {
-      nav: [{
-      title: true,
-      name: 'Type',
-      class: '',
-      wrapper: {
-        element: '',
-        attributes: {}
-      }
-    },
-    {
-      name: 'All',
-      url: '/form',
-      children: [
-          {
-            name: 'type_1',
-            url: '/filter?type_1'
-          },
-          
-          {
-            name: 'type_2',
-            url: '/filter?type_2'
-          },
-          {
-            name: 'type_3',
-            url: '/filter?type_3'
-          }
-      ]
-    }
-    ]
+
     }
   },
-  computed: {
+  methods: {
+    goToTags(){
+      console.log("Tags")
+      this.$router.push("/tags");
+    },
+    gotoType(){
+      console.log("Type")
+      this.$router.push("/type");  
+    }
     // name () {
     //   return this.$route.name
     // },

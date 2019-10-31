@@ -5,6 +5,8 @@ import Tables from '@/components/Tables'
 import Form from '@/components/FormText'
 import CardList from '@/components/CardList'
 import Card from '@/components/Card'
+import Tags from '@/components/Tags'
+import Type from '@/components/Type'
 
 Vue.use(Router)
 
@@ -79,6 +81,32 @@ export default new Router({
                 },
               ]
             }
+          ]
+        },
+        {
+          path: 'tags',
+          name: 'Tags',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Tags,
+            },
+          ]
+        },
+        {
+          path: 'type',
+          name: 'Type',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Type,
+            },
           ]
         }
       ]

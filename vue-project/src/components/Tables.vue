@@ -1,7 +1,7 @@
 <template>
     <b-row>
       <b-col sm="12">
-        <c-table :table-data="itemsArray" :per-page=10 hover striped bordered small fixed caption="<i class='fa fa-align-justify'></i> Combined All Table"></c-table>
+        <c-table :table-data="itemsArray" :per-page=10 hover striped bordered small fixed caption="<i class='fa fa-align-justify'></i> History" style="margin-top: 20px"></c-table>
       </b-col>
     </b-row>
 </template>

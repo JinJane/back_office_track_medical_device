@@ -13,7 +13,7 @@
           <b-form-group
             label="Type"
             label-for="basicSelect"
-            :label-cols="3"
+            :label-cols="1"
             >
             <b-form-select id="basicSelect"
               :plain="true"
@@ -104,7 +104,7 @@
           <b-form-group
             label="Tag"
             label-for="basicCheckboxes"
-            :label-cols="4"
+            :label-cols="1"
             >
             <b-form-select id="basicSelect"
               :plain="true"
@@ -126,7 +126,7 @@
             </b-form-checkbox-group>  
           </b-form-group>  -->
           <b-form-group>
-            <label for="image"></label>
+            <label for="image">Image</label>
             <b-form-input type="text" placeholder="" v-model="image">{{image}}</b-form-input>
           </b-form-group>
           <div slot="footer" class="float-right">
@@ -202,11 +202,11 @@ localStorage.removeItem("CardDevice");
       this.returnResponse["location"] = this.card.location
       this.returnResponse["type"] = this.type
       this.returnResponse["tag"] = this.tagEX// this.returnResponse["tag"] = returnTag(this.listTags)
-      this.returnResponse["_id"] = this.card._id
-      
+      console.log(this.returnResponse["start"])
       console.log(JSON.stringify(this.returnResponse))
-        axios.post('https://servicemed-43izies4dq-an.a.run.app/device').then((response) => {
-
+        axios.post('https://servicemed-43izies4dq-an.a.run.app/device',this.returnResponse).then((response) => {
+          console.log(response)
+          this.$router.push("/cardList");
         })
         .catch((e) => {
         console.error(e)
@@ -219,15 +219,6 @@ localStorage.removeItem("CardDevice");
        this.deleteClick = true;
     },
     editCard(){
-      returnTag(this.listTags)
-
-         //localStorage.setItem("A","B")
-      // this.$router.push("/form");
-      // console.log("edit")
-    },
-    deleteCard(){
-      // this.$router.push("/form");
-      
       this.returnResponse["name"] = this.name
       this.returnResponse["timesTarget"] = this.timesTarget
       this.returnResponse["times"] = this.times
@@ -236,15 +227,34 @@ localStorage.removeItem("CardDevice");
       this.returnResponse["fix"] = returnDate(this.day2,this.month2,this.year2)
       this.returnResponse["location"] = this.card.location
       this.returnResponse["type"] = this.type
-      this.returnResponse["tag"] = this.tagEX// this.returnResponse["tag"] = returnTag(this.listTags)
-      this.returnResponse["_id"] = this.card._id
+      this.returnResponse["tag"] = this.tagEX
+      console.log(this.returnResponse["start"])
       console.log(JSON.stringify(this.returnResponse))
-      // axios.delete('https://servicemed-43izies4dq-an.a.run.app/device').then((response) => {
-      //   this.$router.push("/cardList");
-      //   })
-      //   .catch((e) => {
-      //   console.error(e)
-      //   })
+        axios.put('https://servicemed-43izies4dq-an.a.run.app/device',this.returnResponse).then((response) => {
+          console.log(response)
+          this.$router.push("/cardList");
+        })
+        .catch((e) => {
+        console.error(e)
+        })
+    },
+    deleteCard(){
+      this.returnResponse["name"] = this.name
+      this.returnResponse["timesTarget"] = this.timesTarget
+      this.returnResponse["times"] = this.times
+      this.returnResponse["image"] = this.image
+      this.returnResponse["start"] = returnDate(this.day1,this.month1,this.year1)
+      this.returnResponse["fix"] = returnDate(this.day2,this.month2,this.year2)
+      this.returnResponse["location"] = this.card.location
+      this.returnResponse["type"] = this.type
+      this.returnResponse["tag"] = this.tagEX
+      axios.delete('https://servicemed-43izies4dq-an.a.run.app/device',this.returnResponse).then((response) => {
+        console.log(response)
+        this.$router.push("/cardList");
+        })
+        .catch((e) => {
+        console.error(e)
+        })
     },
     gotoClick(){
        localStorage.removeItem("CardDevice");
@@ -260,25 +270,31 @@ localStorage.removeItem("CardDevice");
       
       this.fix = this.card.fix
       const startDateTime = splitDate(this.start)
-    
-      this.year1 = startDateTime.getFullYear()
-      this.month1 = startDateTime.getMonth()
-      this.day1 = startDateTime.getDate()
+      var time = new Date().getTime();
+      var date = new Date(time);
+      this.year1 = this.start !== undefined ? startDateTime.getFullYear() : date.getFullYear()
+      this.month1 = this.start !== undefined ? startDateTime.getMonth() : date.getMonth()
+      this.day1 = this.start !== undefined ? startDateTime.getDate() : date.getDate()
       
       const fixDateTime = splitDate(this.fix)
-      this.year2 = fixDateTime.getFullYear()
-      this.month2 = fixDateTime.getMonth()
-      this.day2 = fixDateTime.getDate()
+      this.year2 =  this.fix !== undefined ? fixDateTime.getFullYear() : date.getFullYear()
+      this.month2 = this.fix !== undefined ? fixDateTime.getMonth() : date.getMonth()
+      this.day2 = this.fix !== undefined ? fixDateTime.getDate() : date.getDate()
        this.tagEX = this.card.tag
        this.type = this.card.type
       // this.listTags = getTiggleTags(this.card.tag,this.TAGS);
+
+      console.log("hhh")
      
   }
 }
 
 function returnDate(day,month,year){
-  var date = year.concat("-").concat(month).concat("-").concat("T09:00:00.000+02:00")
-  return date;
+  const YMD = new Date()
+  YMD.setDate(day)
+  YMD.setMonth(month)
+  YMD.setFullYear(year)
+  return YMD;
 }
 
 function returnTag(list){

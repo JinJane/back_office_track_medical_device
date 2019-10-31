@@ -1,30 +1,40 @@
 <template>
     <div>
-        <div class="columns is-centered is-multiline content" >
 
-         <div class="card" style="width: 18rem;  margin: 20px 10px 10px 10px; text-align:center;">
-            <div class="card-body" style=" display: grid; margin: 20px 20px 20px 20px;">
-              <a href="#" class="btn btn-success btn-lg" style="margin: 110px 30px 110px 30px;" @click="gotoForm()">ADD</a>
+         <div class="card" style="text-align:center;">
+            <div class="card-body" style=" display: grid;">
+              <div class="card" >
+                <div class="card-header">Featured</div>
+                <ul class="list-group list-group-flush" style="text-align:left;">
+                    <li class="list-group-item">Cras justo odio
+                        <img  src="@/assets/add.png"/>
+                        <img src="@/assets/minus.png"/>
+                    </li>
+                    <li class="list-group-item">Dapibus ac facilisis in
+                        <img  src="@/assets/add.png"/>
+                        <img src="@/assets/minus.png"/>
+                    </li>
+                    <li class="list-group-item">Vestibulum at eros
+                        <img  src="@/assets/add.png"/>
+                        <img src="@/assets/minus.png"/>
+                    </li>
+                    
+                </ul>
+               
+                </div>
             </div>
-          </div>
-
-        <div v-for="card in list" :key="card.id">
-            <Card :card="card"></Card>
-        </div>
+        
         </div>
     </div>
 </template>
 
 <script>
-import Card from './Card'
 import axios from 'axios'
 export default {
-    name: "cardList",
-    components: {Card},
+    name: "Type",
     data() {
         return {
             list: [],
-            numberOfColumns: 4,
             isAdd: false
         }
     },
@@ -41,7 +51,6 @@ export default {
    computed: {
     gridStyle() {
       return {
-        gridTemplateColumns: `8ch auto;`
       }
     },
   },
