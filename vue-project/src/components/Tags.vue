@@ -1,13 +1,26 @@
 <template>
     <div>
-        <div class="columns is-centered is-multiline content" >
-
-         <div class="card" style="width: 18rem;  margin: 20px 10px 10px 10px; text-align:center;">
-            <div class="card-body" >
-                  <img  src="@/assets/add.png"/>
-                  <img src="@/assets/minus.png"/>
+         <div class="card" style="text-align:center; margin: 20px 50px 20px 30px; padding:20px 40px 10px 30px;">
+            <div class="card-body" style=" display: grid;">
+              <div class="card" >
+                <div class="card-header">Name Tags
+                </div>
+                <ul class="list-group list-group-flush" style="text-align:left;">
+                    <li class="list-group-item" v-for="item in list" :key="item">{{item}}
+                      <div class="float-right col-lg-1">
+                        <img @click="getDelete(item)" src="@/assets/minus.png"/>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                        <b-form-input type="text" v-model = "newTag" placeholder="" class="col-lg-10 float-left">{{newTag}}
+                        </b-form-input>
+                      <div class="float-right col-lg-1">
+                        <img @click="getAdd(newTag)" src="@/assets/add.png"/>
+                      </div>
+                    </li>
+                </ul>
+                </div>
             </div>
-          </div>
         </div>
     </div>
 </template>
@@ -15,19 +28,17 @@
 <script>
 import axios from 'axios'
 export default {
-    name: "Tags",
+    name: "Type",
     data() {
         return {
             list: [],
-            numberOfColumns: 4,
-            isAdd: false
+            isAdd: false,
+            newTag: null
         }
     },
-    created() {//http://www.mocky.io/v2/5db121b52e00005b005051ab
-    localStorage.removeItem("ADD");
-        axios.get('https://servicemed-43izies4dq-an.a.run.app/device').then((response) => {
-        this.list = response.data
-        localStorage.setItem("listDevice",JSON.stringify(response.data))
+    created() {
+        axios.get('http://www.mocky.io/v2/5dbba91031000079494c0c14').then((response) => {
+        this.list = response.data.tag
         })
         .catch((e) => {
         console.error(e)
@@ -36,22 +47,17 @@ export default {
    computed: {
     gridStyle() {
       return {
-        gridTemplateColumns: `8ch auto;`
       }
     },
   },
   methods: {
-    gotoForm(){
-      localStorage.setItem("ADD",!this.isAdd)
-      localStorage.setItem("CardDevice",JSON.stringify({}))
-      this.$router.push("/form");
+    getAdd(newTag){
+      console.log("Add Tags = "+ newTag)
+    },
+    getDelete(item){
+      console.log("delete = "+ item)
     }
-  },
-  beforeDestroy:function(){ 
-
-    
-},
-    
+  }
 }
 </script>
 
